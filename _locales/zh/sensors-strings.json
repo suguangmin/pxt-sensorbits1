@@ -153,7 +153,7 @@
 	
 	"sensors.actuator_buzzer0|block": "无源蜂鸣器控制引脚 ：%pin|状态 %status",
 	
-    "sensors.actuator_buzzer1|block": "有源蜂鸣器控制引脚 ：%pin|状态 %status",
+    "sensors.actuator_buzzer1|block": "有源蜂鸣器控制引脚 ：%pin|频率 %freq",
 
     "sensors.actuator_relay|block": "继电器控制引脚 ：%pin|状态 %status",
 	
