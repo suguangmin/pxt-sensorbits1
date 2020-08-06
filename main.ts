@@ -193,7 +193,7 @@ namespace sensors {
         pins.digitalWritePin(pin,status)
     }
   
-    //% blockId=actuator_buzzer1 block="actuator_buzzer1 pin ：%pin|status %status"   group="有源蜂鸣器"
+    //% blockId=actuator_buzzer1 block="actuator_buzzer1 pin ：%pin|status %freq"   group="有源蜂鸣器"
 	//% weight=70
 	//% subcategory="执行器"
     export function actuator_buzzer1(pin: AnalogPin,freq: number): void {
