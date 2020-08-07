@@ -84,9 +84,6 @@
     "ColorEffect.Rotate|block": "旋转流星",
     "ColorEffect.Flash|block": "闪烁",
     "sensors.RUS_04|block": "选择引脚%pin选择彩灯%index选择颜色%rgb选择效果%effect",
-    "PingUnit.MicroSeconds|block": "微秒",
-    "PingUnit.Centimeters|block": "厘米",
-    "PingUnit.Inches|block": "英寸",
     "DHT11Type.DHT11_humidity|block": "湿度(0~100)",
     "DHT11Type.DHT11_temperature_C|block": "摄氏温度(℃)",
 
