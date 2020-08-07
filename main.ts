@@ -1,3 +1,12 @@
+enum PingUnit {
+    //% block="μs"
+    MicroSeconds,
+    //% block="cm"
+    Centimeters,
+    //% block="inches"
+    Inches
+}
+
 enum RgbColors {
     //% block=red
     Red = 0x00FF00,
