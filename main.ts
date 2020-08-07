@@ -231,6 +231,8 @@ namespace sensors {
     //% blockId=actuator_servo block="actuator_servo %pin|angle %angle"  group="舵机"
     //% angle.min=0  angle.max=180
     //% weight=70
+    //% inlineInputMode=inline
+    //% subcategory="执行器"
     export function actuator_servo(pin: AnalogPin, angle: number): void {
 
         let increment = 1
