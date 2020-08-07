@@ -84,7 +84,9 @@
     "ColorEffect.Rotate|block": "旋转流星",
     "ColorEffect.Flash|block": "闪烁",
     "sensors.RUS_04|block": "选择引脚%pin选择彩灯%index选择颜色%rgb选择效果%effect",
-
+    "PingUnit.MicroSeconds|block": "微秒",
+    "PingUnit.Centimeters|block": "厘米",
+    "PingUnit.Inches|block": "英寸",
     "DHT11Type.DHT11_humidity|block": "湿度(0~100)",
     "DHT11Type.DHT11_temperature_C|block": "摄氏温度(℃)",
 
@@ -100,6 +102,8 @@
 	"_selectcolor._blue|block": "蓝色",
 	"_selectcolor._red|block": "红色",
 	"_selectcolor._green|block": "绿色",
+	"sensors.ping|block": "普通超声波初始化trig引脚 %trig | echo引脚 %echo | 单位 %unit",
+	
     "sensors.setled|block": "设置LED灯引脚：%lpin|状态 %lstatus",
 	"sensors.setpin|block": "初始化引脚|绿(G) %GPin|黄(Y) %YPin|红(R) %RPin",
 	"sensors.selectlight|block": "选择LED灯  %selectpin|状态 %_status",
