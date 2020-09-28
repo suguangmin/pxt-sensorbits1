@@ -4,7 +4,7 @@ enum PingUnit {
     //% block="cm"
     Centimeters,
     //% block="inches"
-    Inches
+    Inches,
 }
 
 enum RgbColors {
@@ -27,7 +27,7 @@ enum RgbColors {
     //% block=white
     White = 0xFFFFFF,
     //% block=black
-    Black = 0x000000
+    Black = 0x000000,
 }
 
 enum RgbUltrasonics {
@@ -36,7 +36,7 @@ enum RgbUltrasonics {
 	//% block=right
 	Right = 0x01,
 	//% block=all
-	All = 0x02
+	All = 0x02,
 }
 
 enum ColorEffect {
@@ -47,7 +47,7 @@ enum ColorEffect {
 	//% block=rotate
 	Rotate = 0x02,
 	//% block=flash
-	Flash = 0x03
+	Flash = 0x03,
 }
 
 enum DHT11Type {
@@ -138,7 +138,7 @@ enum _rockerpin{
 	//% block="Xpin"
 	Xpin=0,
 	//% block="Ypin"
-    Ypin = 1motorbit_rus04
+    Ypin = 1,
 }
 
 enum rotation_direction {
