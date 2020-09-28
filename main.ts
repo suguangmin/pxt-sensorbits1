@@ -138,7 +138,7 @@ enum _rockerpin{
 	//% block="Xpin"
 	Xpin=0,
 	//% block="Ypin"
-    Ypin = 1
+    Ypin = 1motorbit_rus04
 }
 
 enum rotation_direction {
@@ -524,17 +524,17 @@ namespace sensors {
         return messageStr
     }
 	
-    //% blockId=ir_received_left_event
+    //% blockId=sensor_ir_received_left_event
     //% block="on |%btn| button pressed" shim=Sensors::onPressEvent group="红外接收"
     //% subcategory="执行器"
-    export function OnPressEvent(btn: RemoteButton, body: () => void): void {
+    export function sensor_ir_received_left_event(btn: RemoteButton, body: () => void): void {
         return;
     }
 
-    //% blockId=ir_init 
+    //% blockId=sensor_ir_init 
     //% block="connect ir receiver to %pin" shim=Sensors::init group="红外接收"
     //% subcategory="执行器"
-    export function Init(pin: IrPins): void {
+    export function sensor_ir_init(pin: IrPins): void {
         return;
     }
 
@@ -1612,11 +1612,11 @@ namespace sensors {
  		emRGBLight.show();
  	}
 
- 	//% blockId="motorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
+ 	//% blockId="sensorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
  	//% weight=75
 	//% inlineInputMode=inline
 	//% subcategory="传感器"
- 	export function RUS_04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
+ 	export function sensorbit_rus04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
  		let start, end;
  		if (!emRGBLight) {
  			emRGBLight = EMRGBLight.create(pin, 6, EMRGBPixelMode.RGB)
