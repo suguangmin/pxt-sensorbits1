@@ -590,6 +590,26 @@ namespace sensors {
           }          
      }
 
+    //% blockId=circulation block="receipt signal"  group="红外接收"
+    //% weight=69
+	//% subcategory="执行器"
+    export function circulation(): void {
+        if ((!received) && (rec_init)) {
+            if (arr.length > 20) {
+                if ((input.runningTimeMicros() - arr[arr.length - 1]) > 120000) {
+                    if (first) {
+                        resetReceiver()
+                        first = false
+                    } else {
+                        received = true
+                        decodeIR();
+                    }
+                }
+            }
+        }
+	}
+
+
     //% blockId=setled block="set led ：%lpin|status %lstatus"   group="LED灯"
 	//% weight=70
 	//% subcategory="显示器"
@@ -1210,7 +1230,7 @@ namespace sensors {
 		    return 0;
 		}
         //return pins.digitalReadPin(a)
-	}
+    }
 	   	           
 
     let Xpin = 0
