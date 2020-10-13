@@ -524,6 +524,27 @@ namespace sensors {
     let _SDO=0
     let _SCL=0
 
+    //% blockId=circulation block="receipt signal"  group="红外接收"
+    //% weight=69
+	//% subcategory="执行器"
+    export function circulation(): void {
+        if ((!received) && (rec_init)) {
+            if (arr.length > 20) {
+                if ((input.runningTimeMicros() - arr[arr.length - 1]) > 120000) {
+                    if (first) {
+                        resetReceiver()
+                        first = false
+                    } else {
+                        received = true
+                        decodeIR();
+                    }
+                }
+            }
+        }
+	}
+
+
+
     //% blockId=actuator_keyborad_pin block="actuator_keyborad_pin|SDOPIN %SDO|SCLPIN %SCL"   group="触摸键盘"
 	//% weight=71
 	//% subcategory="执行器"
@@ -573,25 +594,7 @@ namespace sensors {
           }          
      }
 
-    //% blockId=circulation block="receipt signal"  group="红外接收"
-    //% weight=69
-	//% subcategory="执行器"
-    export function circulation(): void {
-        if ((!received) && (rec_init)) {
-            if (arr.length > 20) {
-                if ((input.runningTimeMicros() - arr[arr.length - 1]) > 120000) {
-                    if (first) {
-                        resetReceiver()
-                        first = false
-                    } else {
-                        received = true
-                        decodeIR();
-                    }
-                }
-            }
-        }
-	}
-
+    
 
     //% blockId=setled block="set led ：%lpin|status %lstatus"   group="LED灯"
 	//% weight=70
