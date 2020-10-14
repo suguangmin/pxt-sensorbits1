@@ -9,7 +9,7 @@
     "files": [
         "README.md",
         "main.ts",
-		"EMRGBLight.ts",
+        "EMRGBLight.ts",
 		"sendbuffer.asm",
 		"sensors.cpp",
         "ReceiverIR.cpp",
