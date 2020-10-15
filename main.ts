@@ -1595,7 +1595,8 @@ namespace sensors {
     }
 	
 	let initialized = false
- 	let neoStrip: neopixel.Strip;
+     //let neoStrip: neopixel.Strip;
+    let emRGBLight: EMRGBLight.EmakefunRGBLight;
 	let matBuf = pins.createBuffer(17);
 	let distanceBuf = 0;
 
@@ -1639,25 +1640,20 @@ namespace sensors {
 	//% inlineInputMode=inline
 	//% subcategory="传感器"
  	export function RUS_04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
-		if(rgb == RgbColors.Red) {
-			rgb = RgbColors.Green;
-		}else if(rgb == RgbColors.Green) {
-	     	rgb = RgbColors.Red;
-		}
- 		let start, end;
- 		if (!neoStrip) {
- 			neoStrip = neopixel.create(pin, 6, NeoPixelMode.RGB)
- 		}
- 		if (index == RgbUltrasonics.Left) {
- 			start = 0;
- 			end = 2;
- 		} else if (index == RgbUltrasonics.Right) {
- 			start = 3;
- 			end = 5;
- 		} else if (index == RgbUltrasonics.All) {
- 			start = 0;
- 			end = 5;
- 		}
+		let start, end;
+        if (!emRGBLight) {
+            emRGBLight = EMRGBLight.create(pin, 6, EMRGBPixelMode.RGB)
+        }
+        if (index == RgbUltrasonics.Left) {
+            start = 0;
+            end = 2;
+        } else if (index == RgbUltrasonics.Right) {
+            start = 3;
+            end = 5;
+        } else if (index == RgbUltrasonics.All) {
+            start = 0;
+            end = 5;
+        }
  		switch(effect) {
  			case ColorEffect.None:
  				RgbDisplay(start, end, rgb);
