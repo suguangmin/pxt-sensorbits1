@@ -1119,7 +1119,7 @@ namespace sensors {
         //     dbuf = [0, 0, 0, 0]
         // }
         //% blockId="TM650_Control" block="display control" group="TM1650数码管"
-		//% weight=40 
+		//% weight=40 blockGap=8
 		//% subcategory="显示器"
         export function TM650_Control(option:Select) {
             if(option==0){
