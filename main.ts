@@ -1193,10 +1193,12 @@ namespace sensors {
 		//% subcategory="显示器"
 		//% dat.max=7 dat.min=0
         export function setIntensity(dat: number) {
-            if ((dat < 0) || (dat > 8))
-                return 
-            if (dat == 0)
-                off()
+            if ((dat < 0) || (dat > 8)){
+                return }
+            if (dat == 0){
+                _intensity = 0
+                cmd(0)
+            }
             else {
                 _intensity = dat
                 cmd((dat << 4) | 0x01)
