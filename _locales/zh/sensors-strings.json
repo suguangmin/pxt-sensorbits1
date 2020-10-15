@@ -127,6 +127,10 @@
     "Item._on|block": "打开",
     "Item._off|block": "关闭",
     "Item._clear|block": "清除",
+    "Select._on|block": "打开",
+    "Select._off|block": "关闭",
+    "Select._clear|block": "清除",
     "sensors.seti2cLcdBacklight|block": "背光灯%backlight状态",
-    "sensors.i2cLcdDisplay_Control|block": "%item显示"
+    "sensors.i2cLcdDisplay_Control|block": "%item显示",
+    "sensors.TM650_Control_Control|block": "%option显示"
 }

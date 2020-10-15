@@ -207,6 +207,15 @@ enum Item{
     _clear = 3,
 }
 
+enum Select{
+    //% block="on"
+    _on = 0,
+    //% block="off"
+    _off = 1,
+    //% block="clear"
+    _clear = 2,
+}
+
 //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
 namespace sensors { 
     //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="有源蜂鸣器"
@@ -787,7 +796,7 @@ namespace sensors {
     // export function i2cLcdClear(): void {
     //     lcdcmd(0x01)
     // }
-    
+
     //% block="i2cLcdDisplay_Control"   group="LCD1602显示屏"  
 	//% subcategory="显示器"
 	//% weight=64
@@ -1084,30 +1093,49 @@ namespace sensors {
             pins.i2cWriteNumber(DISPLAY_I2C_ADDRESS + (bit % 4), d, NumberFormat.Int8BE)
         }
     
-        //% blockId="TM650_ON" block="turn on display" group="TM1650数码管"
-		//% weight=50 blockGap=8
-		//% subcategory="显示器"
-        export function on() {
-            cmd(_intensity * 16 + 1)
-        }
+        // //% blockId="TM650_ON" block="turn on display" group="TM1650数码管"
+		// //% weight=50 blockGap=8
+		// //% subcategory="显示器"
+        // export function on() {
+        //     cmd(_intensity * 16 + 1)
+        // }
     
-        //% blockId="TM650_OFF" block="turn off display" group="TM1650数码管"
-		//% weight=50 blockGap=8
-		//% subcategory="显示器"
-        export function off() {
-            _intensity = 0
-            cmd(0)
-        }
+        // //% blockId="TM650_OFF" block="turn off display" group="TM1650数码管"
+		// //% weight=50 blockGap=8
+		// //% subcategory="显示器"
+        // export function off() {
+        //     _intensity = 0
+        //     cmd(0)
+        // }
 
-        //% blockId="TM650_CLEAR" block="clear display" group="TM1650数码管"
-		//% weight=40 blockGap=8
+        // //% blockId="TM650_CLEAR" block="clear display" group="TM1650数码管"
+		// //% weight=40 blockGap=8
+		// //% subcategory="显示器"
+        // export function clear() {
+        //     dat(0, 0)
+        //     dat(1, 0)
+        //     dat(2, 0)
+        //     dat(3, 0)
+        //     dbuf = [0, 0, 0, 0]
+        // }
+        //% blockId="TM650_Control" block="display control" group="TM1650数码管"
+		//% weight=40 
 		//% subcategory="显示器"
-        export function clear() {
-            dat(0, 0)
-            dat(1, 0)
-            dat(2, 0)
-            dat(3, 0)
-            dbuf = [0, 0, 0, 0]
+        export function TM650_Control(option:Select) {
+            if(option==0){
+                cmd(_intensity * 16 + 1)
+            }
+            if(option==1){
+                _intensity = 0
+                cmd(0)
+            }
+            if(option==2){
+                dat(0, 0)
+                dat(1, 0)
+                dat(2, 0)
+                dat(3, 0)
+                dbuf = [0, 0, 0, 0]
+            }
         }
 
         //% blockId="TM650_DIGIT" block="show digit %num|at %bit"  group="TM1650数码管"
