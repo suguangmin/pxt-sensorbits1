@@ -198,6 +198,15 @@ enum LcdBacklight{
     _off = 0,
 }
 
+enum Item{
+    //% block="on"
+    _on = 1,
+    //% block="off"
+    _off = 2,
+    //% block="clear"
+    _clear = 3,
+}
+
 //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
 namespace sensors { 
     //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="有源蜂鸣器"
@@ -758,26 +767,42 @@ namespace sensors {
         }
     }
 
-	//% block="lcdon"   group="LCD1602显示屏"  
-	//% subcategory="显示器"
-	//% weight=66
-    export function i2cLcdOn(): void {
-        lcdcmd(0x0C)
-    }
+	// //% block="lcdon"   group="LCD1602显示屏"  
+	// //% subcategory="显示器"
+	// //% weight=66
+    // export function i2cLcdOn(): void {
+    //     lcdcmd(0x0C)
+    // }
 
-	//% block="lcdoff"   group="LCD1602显示屏"  
-	//% subcategory="显示器"
-	//% weight=65
-    export function i2cLcdOff(): void {
-        lcdcmd(0x08)
-    }
+	// //% block="lcdoff"   group="LCD1602显示屏"  
+	// //% subcategory="显示器"
+	// //% weight=65
+    // export function i2cLcdOff(): void {
+    //     lcdcmd(0x08)
+    // }
 
-	//% block="lcdclear"   group="LCD1602显示屏"  
+	// //% block="lcdclear"   group="LCD1602显示屏"  
+	// //% subcategory="显示器"
+	// //% weight=64
+    // export function i2cLcdClear(): void {
+    //     lcdcmd(0x01)
+    // }
+    
+    //% block="i2cLcdDisplay_Control"   group="LCD1602显示屏"  
 	//% subcategory="显示器"
 	//% weight=64
-    export function i2cLcdClear(): void {
-        lcdcmd(0x01)
+    export function i2cLcdDisplay_Control(item: Item): void {
+        if(item==1){
+            lcdcmd(0x0C)
+        }
+        if(item==2){
+            lcdcmd(0x08)
+        }
+        if(item==3){
+            lcdcmd(0x01)
+        }
     }
+
 
 	// //% block="lcdlighton"   group="LCD1602显示屏"  
 	// //% subcategory="显示器"
