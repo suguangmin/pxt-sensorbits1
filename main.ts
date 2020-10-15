@@ -1061,7 +1061,7 @@ namespace sensors {
             }
         }
 
-        //% weight=99 blockGap=8
+        //% weight=99 
 		//% blockId="TM1637_create" block="CLK %clk|DIO %dio|intensity %intensity|LED count %count"  group="TM1637数码管"
 		//% inlineInputMode=inline
 		//% subcategory="显示器"
