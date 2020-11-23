@@ -294,6 +294,7 @@ namespace sensors {
         control.waitMicros(lowTime);
     }
 
+    
     //% blockId=setIR_pin block="set IR LED pin: %myPin" blockExternalInputs=false  group="红外发射"
     //% weight=90 blockGap=10
     //% myPin.fieldEditor="gridpicker" myPin.fieldOptions.columns=4
