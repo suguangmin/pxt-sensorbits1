@@ -521,8 +521,8 @@ namespace sensors {
 //         return;
 //     }
 
-//     let _SDO = 0
-//     let _SCL = 0
+     let _SDO = 0
+     let _SCL = 0
 
 //     //% blockId=circulation block="receipt signal"  group="红外接收"
 //     //% weight=69
@@ -1609,12 +1609,12 @@ namespace sensors {
         // Correction
     }
 
-    function RgbDisplay(indexstart: number, indexend: number, rgb: RgbColors): void {
-        for (let i = indexstart; i <= indexend; i++) {
-            emRGBLight.setPixelColor(i, rgb);
-        }
-        emRGBLight.show();
-    }
+    // function RgbDisplay(indexstart: number, indexend: number, rgb: RgbColors): void {
+    //     for (let i = indexstart; i <= indexend; i++) {
+    //         emRGBLight.setPixelColor(i, rgb);
+    //     }
+    //     emRGBLight.show();
+    // }
 
     // //% blockId="sensorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
     // //% weight=75
