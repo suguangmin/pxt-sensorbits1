@@ -466,25 +466,25 @@ namespace sensors {
         return myNum
     }
 
-    function convertNumToHexStr(myNum: number, digits: number): string {
-        let tempDiv = 0
-        let tempMod = 0
-        let myStr = ""
-        tempDiv = myNum
-        while (tempDiv > 0) {
-            tempMod = tempDiv % 16
-            if (tempMod > 9) {
-                myStr = String.fromCharCode(tempMod - 10 + 97) + myStr
-            } else {
-                myStr = tempMod + myStr
-            }
-            tempDiv = Math.idiv(tempDiv, 16)
-        }
-        while (myStr.length != digits) {
-            myStr = "0" + myStr
-        }
-        return myStr
-    }
+    // function convertNumToHexStr(myNum: number, digits: number): string {
+    //     let tempDiv = 0
+    //     let tempMod = 0
+    //     let myStr = ""
+    //     tempDiv = myNum
+    //     while (tempDiv > 0) {
+    //         tempMod = tempDiv % 16
+    //         if (tempMod > 9) {
+    //             myStr = String.fromCharCode(tempMod - 10 + 97) + myStr
+    //         } else {
+    //             myStr = tempMod + myStr
+    //         }
+    //         tempDiv = Math.idiv(tempDiv, 16)
+    //     }
+    //     while (myStr.length != digits) {
+    //         myStr = "0" + myStr
+    //     }
+    //     return myStr
+    // }
 
     //% blockId=onReceivedIR block="on IR message received" blockInlineInputs=true  group="红外接收"
     //% weight=70 blockGap=10
@@ -1076,20 +1076,20 @@ namespace sensors {
         dat(bit, _SEG[num % 16])
     }
 
-    //% blockId="TM650_SHOW_NUMBER" block="show number %num"  group="TM1650数码管"
-    //% weight=100 blockGap=8
-    //% subcategory="显示器"
-    export function showNumber(num: number) {
-        if (num < 0) {
-            dat(0, 0x40) // '-'
-            num = -num
-        }
-        else
-            digit(Math.idiv(num, 1000) % 10, 0)
-        digit(num % 10, 3)
-        digit(Math.idiv(num, 10) % 10, 2)
-        digit(Math.idiv(num, 100) % 10, 1)
-    }
+    // //% blockId="TM650_SHOW_NUMBER" block="show number %num"  group="TM1650数码管"
+    // //% weight=100 blockGap=8
+    // //% subcategory="显示器"
+    // export function showNumber(num: number) {
+    //     if (num < 0) {
+    //         dat(0, 0x40) // '-'
+    //         num = -num
+    //     }
+    //     else
+    //         digit(Math.idiv(num, 1000) % 10, 0)
+    //     digit(num % 10, 3)
+    //     digit(Math.idiv(num, 10) % 10, 2)
+    //     digit(Math.idiv(num, 100) % 10, 1)
+    // }
 
     //% blockId="TM650_SHOW_HEX_NUMBER" block="show hex number %num"  group="TM1650数码管"
     //% weight=90 blockGap=8
@@ -1581,33 +1581,33 @@ namespace sensors {
     let matBuf = pins.createBuffer(17);
     let distanceBuf = 0;
 
-    /**
-     * Get RUS04 distance
-     * @param pin Microbit ultrasonic pin; eg: P2
-    */
-    //% blockId=Ultrasonic block="Read RgbUltrasonic Distance at pin %pin(cm)"  group="RGB超声波"
-    //% weight=76
-    //% inlineInputMode=inline
-    //% subcategory="传感器"
-    export function Ultrasonic(pin: DigitalPin): number {
-        pins.setPull(pin, PinPullMode.PullNone);
-        pins.digitalWritePin(pin, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(pin, 1);
-        control.waitMicros(50);
-        pins.digitalWritePin(pin, 0);
-        // read pulse
-        let d = pins.pulseIn(pin, PulseValue.High, 25000);
-        let ret = d;
-        // filter timeout spikes
-        if (ret == 0 && distanceBuf != 0) {
-            ret = distanceBuf;
-        }
-        distanceBuf = d;
-        return Math.floor(ret * 9 / 6 / 58);
-        //return Math.floor(ret / 40 + (ret / 800));
-        // Correction
-    }
+    // /**
+    //  * Get RUS04 distance
+    //  * @param pin Microbit ultrasonic pin; eg: P2
+    // */
+    // //% blockId=Ultrasonic block="Read RgbUltrasonic Distance at pin %pin(cm)"  group="RGB超声波"
+    // //% weight=76
+    // //% inlineInputMode=inline
+    // //% subcategory="传感器"
+    // export function Ultrasonic(pin: DigitalPin): number {
+    //     pins.setPull(pin, PinPullMode.PullNone);
+    //     pins.digitalWritePin(pin, 0);
+    //     control.waitMicros(2);
+    //     pins.digitalWritePin(pin, 1);
+    //     control.waitMicros(50);
+    //     pins.digitalWritePin(pin, 0);
+    //     // read pulse
+    //     let d = pins.pulseIn(pin, PulseValue.High, 25000);
+    //     let ret = d;
+    //     // filter timeout spikes
+    //     if (ret == 0 && distanceBuf != 0) {
+    //         ret = distanceBuf;
+    //     }
+    //     distanceBuf = d;
+    //     return Math.floor(ret * 9 / 6 / 58);
+    //     //return Math.floor(ret / 40 + (ret / 800));
+    //     // Correction
+    // }
 
     function RgbDisplay(indexstart: number, indexend: number, rgb: RgbColors): void {
         for (let i = indexstart; i <= indexend; i++) {
@@ -1698,35 +1698,35 @@ namespace sensors {
         }
     }
 
-    /**
-     * Send a ping and get the echo time (in microseconds) as a result
-     * @param trig tigger pin
-     * @param echo echo pin
-     * @param unit desired conversion unit
-     * @param maxCmDistance maximum distance in centimeters (default is 500)
-     */
-    //% blockId=sonar_ping block="ping trig %trig|echo %echo|unit %unit" group="普通超声波"
-    //% weight=75
-    //% inlineInputMode=inline
-    //% subcategory="传感器"
-    export function ping(trig: DigitalPin, echo: DigitalPin, unit: PingUnit, maxCmDistance = 500): number {
-        // send pulse
-        pins.setPull(trig, PinPullMode.PullNone);
-        pins.digitalWritePin(trig, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(trig, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(trig, 0);
+    // /**
+    //  * Send a ping and get the echo time (in microseconds) as a result
+    //  * @param trig tigger pin
+    //  * @param echo echo pin
+    //  * @param unit desired conversion unit
+    //  * @param maxCmDistance maximum distance in centimeters (default is 500)
+    //  */
+    // //% blockId=sonar_ping block="ping trig %trig|echo %echo|unit %unit" group="普通超声波"
+    // //% weight=75
+    // //% inlineInputMode=inline
+    // //% subcategory="传感器"
+    // export function ping(trig: DigitalPin, echo: DigitalPin, unit: PingUnit, maxCmDistance = 500): number {
+    //     // send pulse
+    //     pins.setPull(trig, PinPullMode.PullNone);
+    //     pins.digitalWritePin(trig, 0);
+    //     control.waitMicros(2);
+    //     pins.digitalWritePin(trig, 1);
+    //     control.waitMicros(10);
+    //     pins.digitalWritePin(trig, 0);
 
-        // read pulse
-        const d = pins.pulseIn(echo, PulseValue.High, maxCmDistance * 58);
+    //     // read pulse
+    //     const d = pins.pulseIn(echo, PulseValue.High, maxCmDistance * 58);
 
-        switch (unit) {
-            case PingUnit.Centimeters: return Math.idiv(d, 58);
-            case PingUnit.Inches: return Math.idiv(d, 148);
-            default: return d;
-        }
-    }
+    //     switch (unit) {
+    //         case PingUnit.Centimeters: return Math.idiv(d, 58);
+    //         case PingUnit.Inches: return Math.idiv(d, 148);
+    //         default: return d;
+    //     }
+    // }
 
 
     //% blockId="readdht11" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
