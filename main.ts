@@ -521,8 +521,8 @@ namespace sensors {
 //         return;
 //     }
 
-//     let _SDO = 0
-//     let _SCL = 0
+    let _SDO = 0
+    let _SCL = 0
 
 //     //% blockId=circulation block="receipt signal"  group="红外接收"
 //     //% weight=69
