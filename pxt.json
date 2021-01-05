@@ -9,7 +9,6 @@
     "files": [
         "README.md",
         "main.ts",
-		"sensors.cpp",
 		"_locales/zh/sensors-strings.json"
 		
     ],
