@@ -1577,7 +1577,7 @@ namespace sensors {
 
     let initialized = false
     //let neoStrip: neopixel.Strip;
-    let emRGBLight: EMRGBLight.EmakefunRGBLight;
+    //let emRGBLight: EMRGBLight.EmakefunRGBLight;
     let matBuf = pins.createBuffer(17);
     let distanceBuf = 0;
 
@@ -1609,94 +1609,94 @@ namespace sensors {
         // Correction
     }
 
-    function RgbDisplay(indexstart: number, indexend: number, rgb: RgbColors): void {
-        for (let i = indexstart; i <= indexend; i++) {
-            emRGBLight.setPixelColor(i, rgb);
-        }
-        emRGBLight.show();
-    }
+    // function RgbDisplay(indexstart: number, indexend: number, rgb: RgbColors): void {
+    //     for (let i = indexstart; i <= indexend; i++) {
+    //         emRGBLight.setPixelColor(i, rgb);
+    //     }
+    //     emRGBLight.show();
+    // }
 
-    //% blockId="sensorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
-    //% weight=75
-    //% inlineInputMode=inline
-    //% subcategory="传感器"
-    export function sensorbit_rus04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
-        let start, end;
-        if (!emRGBLight) {
-            emRGBLight = EMRGBLight.create(pin, 6, EMRGBPixelMode.RGB)
-        }
-        if (index == RgbUltrasonics.Left) {
-            start = 0;
-            end = 2;
-        } else if (index == RgbUltrasonics.Right) {
-            start = 3;
-            end = 5;
-        } else if (index == RgbUltrasonics.All) {
-            start = 0;
-            end = 5;
-        }
-        switch (effect) {
-            case ColorEffect.None:
-                RgbDisplay(start, end, rgb);
-                break;
-            case ColorEffect.Breathing:
-                for (let i = 0; i < 255; i += 2) {
-                    emRGBLight.setBrightness(i);
-                    RgbDisplay(start, end, rgb);
-                    //basic.pause((255 - i)/2);
-                    basic.pause((i < 20) ? 80 : (255 / i));
-                }
-                for (let i = 255; i > 0; i -= 2) {
-                    emRGBLight.setBrightness(i);
-                    RgbDisplay(start, end, rgb);
-                    basic.pause((i < 20) ? 80 : (255 / i));
-                }
-                break;
-            case ColorEffect.Rotate:
-                for (let i = 0; i < 4; i++) {
-                    emRGBLight.setPixelColor(start, rgb);
-                    emRGBLight.setPixelColor(start + 1, 0);
-                    emRGBLight.setPixelColor(start + 2, 0);
-                    if (index == RgbUltrasonics.All) {
-                        emRGBLight.setPixelColor(end - 2, rgb);
-                        emRGBLight.setPixelColor(end - 1, 0);
-                        emRGBLight.setPixelColor(end, 0);
-                    }
-                    emRGBLight.show();
-                    basic.pause(150);
-                    emRGBLight.setPixelColor(start, 0);
-                    emRGBLight.setPixelColor(start + 1, rgb);
-                    emRGBLight.setPixelColor(start + 2, 0);
-                    if (index == RgbUltrasonics.All) {
-                        emRGBLight.setPixelColor(end - 2, 0);
-                        emRGBLight.setPixelColor(end - 1, rgb);
-                        emRGBLight.setPixelColor(end, 0);
-                    }
-                    emRGBLight.show();
-                    basic.pause(150);
-                    emRGBLight.setPixelColor(start, 0);
-                    emRGBLight.setPixelColor(start + 1, 0);
-                    emRGBLight.setPixelColor(start + 2, rgb);
-                    if (index == RgbUltrasonics.All) {
-                        emRGBLight.setPixelColor(end - 2, 0);
-                        emRGBLight.setPixelColor(end - 1, 0);
-                        emRGBLight.setPixelColor(end, rgb);
-                    }
-                    emRGBLight.show();
-                    basic.pause(150);
-                }
-                RgbDisplay(4, 9, 0);
-                break;
-            case ColorEffect.Flash:
-                for (let i = 0; i < 6; i++) {
-                    RgbDisplay(start, end, rgb);
-                    basic.pause(150);
-                    RgbDisplay(start, end, 0);
-                    basic.pause(150);
-                }
-                break;
-        }
-    }
+    // //% blockId="sensorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
+    // //% weight=75
+    // //% inlineInputMode=inline
+    // //% subcategory="传感器"
+    // export function sensorbit_rus04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
+    //     let start, end;
+    //     if (!emRGBLight) {
+    //         emRGBLight = EMRGBLight.create(pin, 6, EMRGBPixelMode.RGB)
+    //     }
+    //     if (index == RgbUltrasonics.Left) {
+    //         start = 0;
+    //         end = 2;
+    //     } else if (index == RgbUltrasonics.Right) {
+    //         start = 3;
+    //         end = 5;
+    //     } else if (index == RgbUltrasonics.All) {
+    //         start = 0;
+    //         end = 5;
+    //     }
+    //     switch (effect) {
+    //         case ColorEffect.None:
+    //             RgbDisplay(start, end, rgb);
+    //             break;
+    //         case ColorEffect.Breathing:
+    //             for (let i = 0; i < 255; i += 2) {
+    //                 emRGBLight.setBrightness(i);
+    //                 RgbDisplay(start, end, rgb);
+    //                 //basic.pause((255 - i)/2);
+    //                 basic.pause((i < 20) ? 80 : (255 / i));
+    //             }
+    //             for (let i = 255; i > 0; i -= 2) {
+    //                 emRGBLight.setBrightness(i);
+    //                 RgbDisplay(start, end, rgb);
+    //                 basic.pause((i < 20) ? 80 : (255 / i));
+    //             }
+    //             break;
+    //         case ColorEffect.Rotate:
+    //             for (let i = 0; i < 4; i++) {
+    //                 emRGBLight.setPixelColor(start, rgb);
+    //                 emRGBLight.setPixelColor(start + 1, 0);
+    //                 emRGBLight.setPixelColor(start + 2, 0);
+    //                 if (index == RgbUltrasonics.All) {
+    //                     emRGBLight.setPixelColor(end - 2, rgb);
+    //                     emRGBLight.setPixelColor(end - 1, 0);
+    //                     emRGBLight.setPixelColor(end, 0);
+    //                 }
+    //                 emRGBLight.show();
+    //                 basic.pause(150);
+    //                 emRGBLight.setPixelColor(start, 0);
+    //                 emRGBLight.setPixelColor(start + 1, rgb);
+    //                 emRGBLight.setPixelColor(start + 2, 0);
+    //                 if (index == RgbUltrasonics.All) {
+    //                     emRGBLight.setPixelColor(end - 2, 0);
+    //                     emRGBLight.setPixelColor(end - 1, rgb);
+    //                     emRGBLight.setPixelColor(end, 0);
+    //                 }
+    //                 emRGBLight.show();
+    //                 basic.pause(150);
+    //                 emRGBLight.setPixelColor(start, 0);
+    //                 emRGBLight.setPixelColor(start + 1, 0);
+    //                 emRGBLight.setPixelColor(start + 2, rgb);
+    //                 if (index == RgbUltrasonics.All) {
+    //                     emRGBLight.setPixelColor(end - 2, 0);
+    //                     emRGBLight.setPixelColor(end - 1, 0);
+    //                     emRGBLight.setPixelColor(end, rgb);
+    //                 }
+    //                 emRGBLight.show();
+    //                 basic.pause(150);
+    //             }
+    //             RgbDisplay(4, 9, 0);
+    //             break;
+    //         case ColorEffect.Flash:
+    //             for (let i = 0; i < 6; i++) {
+    //                 RgbDisplay(start, end, rgb);
+    //                 basic.pause(150);
+    //                 RgbDisplay(start, end, 0);
+    //                 basic.pause(150);
+    //             }
+    //             break;
+    //     }
+    // }
 
     /**
      * Send a ping and get the echo time (in microseconds) as a result
