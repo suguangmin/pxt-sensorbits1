@@ -536,7 +536,7 @@ namespace sensors {
                         first = false
                     } else {
                         received = true
-                        decodeIR();
+                        //decodeIR();
                     }
                 }
             }
