@@ -9,11 +9,7 @@
     "files": [
         "README.md",
         "main.ts",
-        "ReceiverIR.cpp",
-        "ReceiverIR.h",
-        "RemoteIR.h",
-        "TransmitterIR.cpp",
-        "TransmitterIR.h",
+		"EMRGBLight.ts",
 		"_locales/zh/sensors-strings.json"
 		
     ],
