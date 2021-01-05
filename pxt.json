@@ -9,7 +9,6 @@
     "files": [
         "README.md",
         "main.ts",
-		"EMRGBLight.ts",
         "ReceiverIR.cpp",
         "ReceiverIR.h",
         "RemoteIR.h",
