@@ -420,38 +420,38 @@ namespace sensors {
     }
 
 
-    function decodeIR() {
-        let addr = 0
-        let command = 0
-        messageStr = ""
-        rec_Type = ""
-        for (let i = 0; i <= arr.length - 1 - 1; i++) {
-            arr[i] = arr[i + 1] - arr[i]
-        }
-        if (((arr[0] + arr[1]) > 13000) && ((arr[0] + arr[1]) < 14000)) {
-            rec_Type = "NEC"
-            arr.removeAt(1)
-            arr.removeAt(0)
-            addr = pulseToDigit(0, 15, 1600)
-            command = pulseToDigit(16, 31, 1600)
-            messageStr = convertNumToHexStr(addr, 4) + convertNumToHexStr(command, 4)
-            arr = [];
-            if (thereIsHandler) {
-                tempHandler();
-            }
-        } else if (((arr[0] + arr[1]) > 2600) && ((arr[0] + arr[1]) < 3200)) {
-            rec_Type = "SONY"
-            arr.removeAt(1)
-            arr.removeAt(0)
-            command = pulseToDigit(0, 11, 1300)
-            messageStr = convertNumToHexStr(command, 3)
-            arr = [];
-            if (thereIsHandler) {
-                tempHandler();
-            }
-        }
-        resetReceiver();
-    }
+    // function decodeIR() {
+    //     let addr = 0
+    //     let command = 0
+    //     messageStr = ""
+    //     rec_Type = ""
+    //     for (let i = 0; i <= arr.length - 1 - 1; i++) {
+    //         arr[i] = arr[i + 1] - arr[i]
+    //     }
+    //     if (((arr[0] + arr[1]) > 13000) && ((arr[0] + arr[1]) < 14000)) {
+    //         rec_Type = "NEC"
+    //         arr.removeAt(1)
+    //         arr.removeAt(0)
+    //         addr = pulseToDigit(0, 15, 1600)
+    //         command = pulseToDigit(16, 31, 1600)
+    //         messageStr = convertNumToHexStr(addr, 4) + convertNumToHexStr(command, 4)
+    //         arr = [];
+    //         if (thereIsHandler) {
+    //             tempHandler();
+    //         }
+    //     } else if (((arr[0] + arr[1]) > 2600) && ((arr[0] + arr[1]) < 3200)) {
+    //         rec_Type = "SONY"
+    //         arr.removeAt(1)
+    //         arr.removeAt(0)
+    //         command = pulseToDigit(0, 11, 1300)
+    //         messageStr = convertNumToHexStr(command, 3)
+    //         arr = [];
+    //         if (thereIsHandler) {
+    //             tempHandler();
+    //         }
+    //     }
+    //     resetReceiver();
+    // }
 
     function pulseToDigit(beginBit: number, endBit: number, duration: number): number {
         let myNum = 0
