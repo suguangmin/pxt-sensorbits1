@@ -193,8 +193,8 @@ enum run_turn {
     reverse = 1,
 }
 
-// //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
-// namespace sensors {
+ //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
+ namespace sensors {
 //     //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="无源蜂鸣器"
 //     //% weight=70
 //     //% subcategory="执行器"
@@ -1784,4 +1784,4 @@ enum run_turn {
     }
 
 
-//}
+}
