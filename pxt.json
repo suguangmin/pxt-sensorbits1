@@ -12,8 +12,6 @@
         "EMRGBLight.ts",
         "ReceiverIR.cpp",
         "ReceiverIR.h",
-        "TransmitterIR.cpp",
-        "TransmitterIR.h",
 		"_locales/zh/sensors-strings.json"
 		
     ],
