@@ -10,8 +10,6 @@
         "README.md",
         "main.ts",
         "EMRGBLight.ts",
-        "TransmitterIR.cpp",
-        "TransmitterIR.h",
 		"_locales/zh/sensors-strings.json"
 		
     ],
