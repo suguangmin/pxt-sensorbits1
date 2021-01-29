@@ -1,10 +1,8 @@
 enum PingUnit {
-    //% block="μs"
-    MicroSeconds,
     //% block="cm"
     Centimeters,
     //% block="inches"
-    Inches,
+    Inches
 }
 
 enum RgbColors {
@@ -27,7 +25,7 @@ enum RgbColors {
     //% block=white
     White = 0xFFFFFF,
     //% block=black
-    Black = 0x000000,
+    Black = 0x000000
 }
 
 enum RgbUltrasonics {
@@ -36,7 +34,7 @@ enum RgbUltrasonics {
     //% block=right
     Right = 0x01,
     //% block=all
-    All = 0x02,
+    All = 0x02
 }
 
 enum ColorEffect {
@@ -47,7 +45,7 @@ enum ColorEffect {
     //% block=rotate
     Rotate = 0x02,
     //% block=flash
-    Flash = 0x03,
+    Flash = 0x03
 }
 
 enum DHT11Type {
@@ -138,7 +136,7 @@ enum _rockerpin {
     //% block="Xpin"
     Xpin = 0,
     //% block="Ypin"
-    Ypin = 1,
+    Ypin = 1
 }
 
 enum rotation_direction {
@@ -193,16 +191,41 @@ enum run_turn {
     reverse = 1,
 }
 
+enum LcdBacklight {
+    //% block="on"
+    _on = 1,
+    //% block="off"
+    _off = 0,
+}
+
+enum Item {
+    //% block="on"
+    _on = 1,
+    //% block="off"
+    _off = 2,
+    //% block="clear"
+    _clear = 3,
+}
+
+enum Select {
+    //% block="on"
+    _on = 0,
+    //% block="off"
+    _off = 1,
+    //% block="clear"
+    _clear = 2,
+}
+
 //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
 namespace sensors {
-    //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="无源蜂鸣器"
+    //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="有源蜂鸣器"
     //% weight=70
     //% subcategory="执行器"
     export function actuator_buzzer0(pin: DigitalPin, status: on_off): void {
         pins.digitalWritePin(pin, status)
     }
 
-    //% blockId=actuator_buzzer1 block="actuator_buzzer1 pin ：%pin|status %status"   group="有源蜂鸣器"
+    //% blockId=actuator_buzzer1 block="actuator_buzzer1 pin ：%pin|freq %freq"   group="无源蜂鸣器"
     //% weight=70
     //% subcategory="执行器"
     export function actuator_buzzer1(pin: AnalogPin, freq: number): void {
@@ -258,292 +281,14 @@ namespace sensors {
      * 激光模块
      */
     //% blockId=actuator_laser block="actuator_laser pin ：%pin|status %status"   group="激光模块"
-    //% weight=70
-    //% subcategory="执行器"
-    export function actuator_laser(pin: DigitalPin, status: on_off): void {
-        pins.digitalWritePin(pin, status)
-    }
-
-    /**
-     * 红外发射
-     */
-    export enum encodingType {
-        //% block="NEC"
-        NEC
-    }
-    let tempHandler: Action;
-    let irLed = AnalogPin.P16;
-    const pwmPeriod = 26;
-    pins.analogWritePin(irLed, 0);
-    pins.analogSetPeriod(irLed, pwmPeriod);
-    let send_init = false;
-    let rec_init = false;
-    let arr: number[] = []
-    let received = false
-    let first = true
-    let rec_Type = ""
-    let messageStr = ""
-    let recPin = DigitalPin.P8
-    let thereIsHandler = false
-    arr = []
-
-    function transmitBit(highTime: number, lowTime: number): void {
-        pins.analogWritePin(irLed, 512);
-        control.waitMicros(highTime);
-        pins.analogWritePin(irLed, 0);
-        control.waitMicros(lowTime);
-    }
-
-    //% blockId=setIR_pin block="set IR LED pin: %myPin" blockExternalInputs=false  group="红外发射"
-    //% weight=90 blockGap=10
-    //% myPin.fieldEditor="gridpicker" myPin.fieldOptions.columns=4
-    //% myPin.fieldOptions.tooltips="false" myPin.fieldOptions.width="300"
-    //% subcategory="执行器"
-    export function setIR_pin(myPin: AnalogPin) {
-        irLed = myPin;
-        pins.analogWritePin(irLed, 0);
-        pins.analogSetPeriod(irLed, pwmPeriod);
-        send_init = true;
-    }
-
-    //% blockId=setREC_pin block="set IR receiver pin: %myPin" blockExternalInputs=false  group="红外接收"
-    //% weight=85 blockGap=10
-    //% myPin.fieldEditor="gridpicker" myPin.fieldOptions.columns=4
-    //% myPin.fieldOptions.tooltips="false" myPin.fieldOptions.width="300"
-    //% subcategory="执行器"
-    export function setREC_pin(myPin: DigitalPin) {
-        recPin = myPin;
-        pins.setEvents(recPin, PinEventType.Pulse)
-        pins.setPull(recPin, PinPullMode.PullUp)
-        pins.onPulsed(recPin, PulseValue.Low, function () {
-            arr.push(input.runningTimeMicros())
-        })
-        pins.onPulsed(recPin, PulseValue.High, function () {
-            arr.push(input.runningTimeMicros())
-        })
-        control.onEvent(recPin, DAL.MICROBIT_PIN_EVENT_ON_TOUCH, tempHandler);
-        rec_init = true;
-    }
-
-    //% blockId=sendMyMessage1 block="send message: %msg| ,%times| times, encoding type:%myType"  group="红外发射"
-    //% weight=80 blockGap=10
-    //% subcategory="执行器"
-    export function sendMyMessage1(msg: string, times: number, myType: encodingType): void {
-        if (send_init) {
-            //control.inBackground(() => {
-            sendMessage(convertHexStrToNum(msg), times, myType);
-            //})
-        }
-    }
-
-    /**
-  * send message from IR LED. You must set the message encoding type, send how many times, and the message.
-  */
-    //% blockId=sendMyMessage2 block="send message: %msg| ,%times| times, encoding type:%myType"  group="红外发射"
-    //% weight=75 blockGap=10
-    //% subcategory="执行器"
-    export function sendMyMessage2(msg: string, times: number, myType: string): void {
-        if (send_init) {
-            if (myType == "NEC") {
-                sendMessage(convertHexStrToNum(msg), times, encodingType.NEC);
-            }
-        }
-    }
-
-    function encode(myCode: number, bits: number, trueHigh: number, trueLow: number, falseHigh: number, falseLow: number): void {
-        const MESSAGE_BITS = bits;
-        for (let mask = 1 << (MESSAGE_BITS - 1); mask > 0; mask >>= 1) {
-            if (myCode & mask) {
-                transmitBit(trueHigh, trueLow);
-            } else {
-                transmitBit(falseHigh, falseLow);
-            }
-        }
-    }
-
-    function sendNEC(message: number, times: number): void {
-        const enum NEC {
-            startHigh = 9000,
-            startLow = 4500,
-            stopHigh = 560,
-            stopLow = 0,
-            trueHigh = 560,
-            trueLow = 1690,
-            falseHigh = 560,
-            falseLow = 560,
-            interval = 110000
-        }
-        let address = message >> 16;
-        let command = message % 0x010000;
-        const MESSAGE_BITS = 16;
-        let startTime = 0;
-        let betweenTime = 0;
-        for (let sendCount = 0; sendCount < times; sendCount++) {
-            startTime = input.runningTimeMicros();
-            transmitBit(NEC.startHigh, NEC.startLow);
-            encode(address, 16, NEC.trueHigh, NEC.trueLow, NEC.falseHigh, NEC.falseLow);
-            encode(command, 16, NEC.trueHigh, NEC.trueLow, NEC.falseHigh, NEC.falseLow);
-            transmitBit(NEC.stopHigh, NEC.stopLow);
-            betweenTime = input.runningTimeMicros() - startTime
-            if (times > 0)
-                control.waitMicros(NEC.interval - betweenTime);
-        }
-    }
-
-    export function sendMessage(message: number, times: number, myType: encodingType): void {
-        switch (myType) {
-            case encodingType.NEC: sendNEC(message, times);
-            default: sendNEC(message, times);
-        }
-    }
-
-    function convertHexStrToNum(myMsg: string): number {
-        let myNum = 0
-        for (let i = 0; i < myMsg.length; i++) {
-            if ((myMsg.charCodeAt(i) > 47) && (myMsg.charCodeAt(i) < 58)) {
-                myNum += (myMsg.charCodeAt(i) - 48) * (16 ** (myMsg.length - 1 - i))
-            } else if ((myMsg.charCodeAt(i) > 96) && (myMsg.charCodeAt(i) < 103)) {
-                myNum += (myMsg.charCodeAt(i) - 87) * (16 ** (myMsg.length - 1 - i))
-            } else if ((myMsg.charCodeAt(i) > 64) && (myMsg.charCodeAt(i) < 71)) {
-                myNum += (myMsg.charCodeAt(i) - 55) * (16 ** (myMsg.length - 1 - i))
-            } else {
-                myNum = 0
-                break
-            }
-        }
-        return myNum
-    }
-
-    function resetReceiver() {
-        arr = []
-        received = false
-    }
-
-
-    function decodeIR() {
-        let addr = 0
-        let command = 0
-        messageStr = ""
-        rec_Type = ""
-        for (let i = 0; i <= arr.length - 1 - 1; i++) {
-            arr[i] = arr[i + 1] - arr[i]
-        }
-        if (((arr[0] + arr[1]) > 13000) && ((arr[0] + arr[1]) < 14000)) {
-            rec_Type = "NEC"
-            arr.removeAt(1)
-            arr.removeAt(0)
-            addr = pulseToDigit(0, 15, 1600)
-            command = pulseToDigit(16, 31, 1600)
-            messageStr = convertNumToHexStr(addr, 4) + convertNumToHexStr(command, 4)
-            arr = [];
-            if (thereIsHandler) {
-                tempHandler();
-            }
-        } else if (((arr[0] + arr[1]) > 2600) && ((arr[0] + arr[1]) < 3200)) {
-            rec_Type = "SONY"
-            arr.removeAt(1)
-            arr.removeAt(0)
-            command = pulseToDigit(0, 11, 1300)
-            messageStr = convertNumToHexStr(command, 3)
-            arr = [];
-            if (thereIsHandler) {
-                tempHandler();
-            }
-        }
-        resetReceiver();
-    }
-
-    function pulseToDigit(beginBit: number, endBit: number, duration: number): number {
-        let myNum = 0
-        for (let i = beginBit; i <= endBit; i++) {
-            myNum <<= 1
-            if ((arr[i * 2] + arr[i * 2 + 1]) < duration) {
-                myNum += 0
-            } else {
-                myNum += 1
-            }
-        }
-        return myNum
-    }
-
-    function convertNumToHexStr(myNum: number, digits: number): string {
-        let tempDiv = 0
-        let tempMod = 0
-        let myStr = ""
-        tempDiv = myNum
-        while (tempDiv > 0) {
-            tempMod = tempDiv % 16
-            if (tempMod > 9) {
-                myStr = String.fromCharCode(tempMod - 10 + 97) + myStr
-            } else {
-                myStr = tempMod + myStr
-            }
-            tempDiv = Math.idiv(tempDiv, 16)
-        }
-        while (myStr.length != digits) {
-            myStr = "0" + myStr
-        }
-        return myStr
-    }
-
-    //% blockId=onReceivedIR block="on IR message received" blockInlineInputs=true  group="红外接收"
-    //% weight=70 blockGap=10
-    //% subcategory="执行器"
-    export function onReceivedIR(handler: Action): void {
-        tempHandler = handler
-        thereIsHandler = true
-    }
-
-    //% blockId=getRecType block="the received IR encoding type"  group="红外接收"
-    //% weight=60 blockGap=10
-    //% subcategory="执行器"
-    export function getRecType(): string {
-        return rec_Type
-    }
-    //% blockId=getMessage block="the received IR message"  group="红外接收"
-    //% weight=60 blockGap=10
-    //% subcategory="执行器"
-    export function getMessage(): string {
-        return messageStr
-    }
-
-    //% blockId=sensor_ir_received_left_event
-    //% block="on |%btn| button pressed" shim=Sensors::onPressEvent group="红外接收"
-    //% subcategory="执行器"
-    export function sensor_ir_received_left_event(btn: RemoteButton, body: () => void): void {
-        return;
-    }
-
-    //% blockId=sensor_ir_init 
-    //% block="connect ir receiver to %pin" shim=Sensors::init group="红外接收"
-    //% subcategory="执行器"
-    export function sensor_ir_init(pin: IrPins): void {
-        return;
+	//% weight=70
+	//% subcategory="执行器"
+    export function actuator_laser(pin: DigitalPin,status: on_off): void {
+        pins.digitalWritePin(pin,status)
     }
 
     let _SDO = 0
     let _SCL = 0
-
-    //% blockId=circulation block="receipt signal"  group="红外接收"
-    //% weight=69
-    //% subcategory="执行器"
-    export function circulation(): void {
-        if ((!received) && (rec_init)) {
-            if (arr.length > 20) {
-                if ((input.runningTimeMicros() - arr[arr.length - 1]) > 120000) {
-                    if (first) {
-                        resetReceiver()
-                        first = false
-                    } else {
-                        received = true
-                        decodeIR();
-                    }
-                }
-            }
-        }
-    }
-
-
 
     //% blockId=actuator_keyborad_pin block="actuator_keyborad_pin|SDOPIN %SDO|SCLPIN %SCL"   group="触摸键盘"
     //% weight=71
@@ -591,8 +336,6 @@ namespace sensors {
             default: return " "
         }
     }
-
-
 
     //% blockId=setled block="set led ：%lpin|status %lstatus"   group="LED灯"
     //% weight=70
@@ -712,11 +455,12 @@ namespace sensors {
     //% weight=69
     export function i2cLcdShowChar(y: number, x: number, ch: string): void {
         let a: number
-
+        y = y - 1
         if (y > 0)
             a = 0xC0
         else
             a = 0x80
+        x = x - 1
         a += x
         lcdcmd(a)
         lcddat(ch.charCodeAt(0))
@@ -739,11 +483,12 @@ namespace sensors {
     //% weight=67
     export function i2cLcdShowString(y: number, x: number, s: string): void {
         let a: number
-
+        y = y - 1
         if (y > 0)
             a = 0xC0
         else
             a = 0x80
+        x = x - 1
         a += x
         lcdcmd(a)
 
@@ -752,41 +497,70 @@ namespace sensors {
         }
     }
 
-    //% block="lcdon"   group="LCD1602显示屏"  
-    //% subcategory="显示器"
-    //% weight=66
-    export function i2cLcdOn(): void {
-        lcdcmd(0x0C)
-    }
+    // //% block="lcdon"   group="LCD1602显示屏"  
+    // //% subcategory="显示器"
+    // //% weight=66
+    // export function i2cLcdOn(): void {
+    //     lcdcmd(0x0C)
+    // }
 
-    //% block="lcdoff"   group="LCD1602显示屏"  
-    //% subcategory="显示器"
-    //% weight=65
-    export function i2cLcdOff(): void {
-        lcdcmd(0x08)
-    }
+    // //% block="lcdoff"   group="LCD1602显示屏"  
+    // //% subcategory="显示器"
+    // //% weight=65
+    // export function i2cLcdOff(): void {
+    //     lcdcmd(0x08)
+    // }
 
-    //% block="lcdclear"   group="LCD1602显示屏"  
+    // //% block="lcdclear"   group="LCD1602显示屏"  
+    // //% subcategory="显示器"
+    // //% weight=64
+    // export function i2cLcdClear(): void {
+    //     lcdcmd(0x01)
+    // }
+
+    //% block="i2cLcdDisplay_Control"   group="LCD1602显示屏"  
     //% subcategory="显示器"
     //% weight=64
-    export function i2cLcdClear(): void {
-        lcdcmd(0x01)
+    export function i2cLcdDisplay_Control(item: Item): void {
+        if (item == 1) {
+            lcdcmd(0x0C)
+        }
+        if (item == 2) {
+            lcdcmd(0x08)
+        }
+        if (item == 3) {
+            lcdcmd(0x01)
+        }
     }
 
-    //% block="lcdlighton"   group="LCD1602显示屏"  
-    //% subcategory="显示器"
-    //% weight=63
-    export function i2cLcdBacklightOn(): void {
-        BK = 8
-        lcdcmd(0)
-    }
 
-    //% block="lcdlightoff"   group="LCD1602显示屏"  
-    //% subcategory="显示器"
-    //% weight=62
-    export function i2cLcdBacklightOff(): void {
-        BK = 0
-        lcdcmd(0)
+    // //% block="lcdlighton"   group="LCD1602显示屏"  
+    // //% subcategory="显示器"
+    // //% weight=63
+    // export function i2cLcdBacklightOn(): void {
+    //     BK = 8
+    //     lcdcmd(0)
+    // }
+
+    // //% block="lcdlightoff"   group="LCD1602显示屏"  
+    // //% subcategory="显示器"
+    // //% weight=62
+    // export function i2cLcdBacklightOff(): void {
+    //     BK = 0
+    //     lcdcmd(0)
+    // }
+    //% subcategory="显示器"   group="LCD1602显示屏"
+    //% blockId="Backlight switch control"
+    //% weight=79
+    export function seti2cLcdBacklight(backlight: LcdBacklight): void {
+        if (backlight == 1) {
+            BK = 8
+            lcdcmd(0)
+        }
+        if (backlight == 0) {
+            BK = 0
+            lcdcmd(0)
+        }
     }
 
 
@@ -1008,7 +782,7 @@ namespace sensors {
         }
     }
 
-    //% weight=99 blockGap=8
+    //% weight=99 
     //% blockId="TM1637_create" block="CLK %clk|DIO %dio|intensity %intensity|LED count %count"  group="TM1637数码管"
     //% inlineInputMode=inline
     //% subcategory="显示器"
@@ -1040,30 +814,49 @@ namespace sensors {
         pins.i2cWriteNumber(DISPLAY_I2C_ADDRESS + (bit % 4), d, NumberFormat.Int8BE)
     }
 
-    //% blockId="TM650_ON" block="turn on display" group="TM1650数码管"
-    //% weight=50 blockGap=8
-    //% subcategory="显示器"
-    export function on() {
-        cmd(_intensity * 16 + 1)
-    }
+    // //% blockId="TM650_ON" block="turn on display" group="TM1650数码管"
+    // //% weight=50 blockGap=8
+    // //% subcategory="显示器"
+    // export function on() {
+    //     cmd(_intensity * 16 + 1)
+    // }
 
-    //% blockId="TM650_OFF" block="turn off display" group="TM1650数码管"
-    //% weight=50 blockGap=8
-    //% subcategory="显示器"
-    export function off() {
-        _intensity = 0
-        cmd(0)
-    }
+    // //% blockId="TM650_OFF" block="turn off display" group="TM1650数码管"
+    // //% weight=50 blockGap=8
+    // //% subcategory="显示器"
+    // export function off() {
+    //     _intensity = 0
+    //     cmd(0)
+    // }
 
-    //% blockId="TM650_CLEAR" block="clear display" group="TM1650数码管"
+    // //% blockId="TM650_CLEAR" block="clear display" group="TM1650数码管"
+    // //% weight=40 blockGap=8
+    // //% subcategory="显示器"
+    // export function clear() {
+    //     dat(0, 0)
+    //     dat(1, 0)
+    //     dat(2, 0)
+    //     dat(3, 0)
+    //     dbuf = [0, 0, 0, 0]
+    // }
+    //% blockId="TM650_Control" block="display control" group="TM1650数码管"
     //% weight=40 blockGap=8
     //% subcategory="显示器"
-    export function clear() {
-        dat(0, 0)
-        dat(1, 0)
-        dat(2, 0)
-        dat(3, 0)
-        dbuf = [0, 0, 0, 0]
+    export function TM650_Control(option: Select) {
+        if (option == 0) {
+            cmd(_intensity * 16 + 1)
+        }
+        if (option == 1) {
+            _intensity = 0
+            cmd(0)
+        }
+        if (option == 2) {
+            dat(0, 0)
+            dat(1, 0)
+            dat(2, 0)
+            dat(3, 0)
+            dbuf = [0, 0, 0, 0]
+        }
     }
 
     //% blockId="TM650_DIGIT" block="show digit %num|at %bit"  group="TM1650数码管"
@@ -1071,7 +864,7 @@ namespace sensors {
     //% num.max=15 num.min=0
     //% subcategory="显示器"
     //% bit.max=3 bit.min=0
-    export function digit(bit: number, num: number) {
+    export function digit(num: number, bit: number) {
         dbuf[bit % 4] = _SEG[num % 16]
         dat(bit, _SEG[num % 16])
     }
@@ -1121,10 +914,13 @@ namespace sensors {
     //% subcategory="显示器"
     //% dat.max=7 dat.min=0
     export function setIntensity(dat: number) {
-        if ((dat < 0) || (dat > 8))
+        if ((dat < 0) || (dat > 8)) {
             return
-        if (dat == 0)
-            off()
+        }
+        if (dat == 0) {
+            _intensity = 0
+            cmd(0)
+        }
         else {
             _intensity = dat
             cmd((dat << 4) | 0x01)
@@ -1137,9 +933,9 @@ namespace sensors {
     export function touchButton(pin: DigitalPin): boolean {
         pins.digitalWritePin(pin, 0)
         if (pins.digitalReadPin(pin) == 1) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -1616,7 +1412,7 @@ namespace sensors {
         emRGBLight.show();
     }
 
-    //% blockId="sensorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
+    //% blockId="motorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
     //% weight=75
     //% inlineInputMode=inline
     //% subcategory="传感器"
@@ -1705,7 +1501,7 @@ namespace sensors {
      * @param unit desired conversion unit
      * @param maxCmDistance maximum distance in centimeters (default is 500)
      */
-    //% blockId=sonar_ping block="ping trig %trig|echo %echo|unit %unit" group="普通超声波"
+    //% blockId="sensor_ping" block="ping trig %trig|echo %echo|unit %unit" group="普通超声波"
     //% weight=75
     //% inlineInputMode=inline
     //% subcategory="传感器"
@@ -1727,7 +1523,6 @@ namespace sensors {
             default: return d;
         }
     }
-
 
     //% blockId="readdht11" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
     //% subcategory="传感器"
@@ -1756,7 +1551,7 @@ namespace sensors {
                         }
                     }
                 }
-                return ((dhtvalue1 & 0x0000ff00) >> 8);
+                return ((dhtvalue1 & 0xffff0000) >> 16);
                 break;
 
             case 1:
@@ -1782,6 +1577,74 @@ namespace sensors {
                 return 0;
         }
     }
+
+
+/**
+     * 循迹传感器
+     */
+    //% blockId=sensor_tracking block="sensor_tracking pin |digitalpin %pin"  group="循迹传感器"
+    //% weight=74
+    //% subcategory="传感器"
+    //% inlineInputMode=inline
+    export function sensor_tracking(pin: DigitalPin): boolean {
+        pins.digitalWritePin(pin, 0)
+           if (pins.digitalReadPin(pin) == 1) {
+              return false;
+          }else {
+              return true;
+          }
+      }
+      
+      let outPin1 = 0;
+      let outPin2 = 0;
+      let outPin3 = 0;
+      let outPin4 = 0;
+      /**
+       * 四路循迹传感器初始化
+       */
+      //% blockId=four_sensor_tracking block="four_sensor_tracking pin1 |digitalpin %pin1 pin2 |digitalpin %pin2 |pin3 |digitalpin %pin3 |pin4 |digitalpin %pin4"  group="循迹传感器"
+      //% inlineInputMode=inline
+      //% weight=73
+      //% subcategory="传感器"
+      export function four_sensor_tracking(pin1: DigitalPin, pin2: DigitalPin, pin3: DigitalPin, pin4: DigitalPin): void {
+        outPin1 = pin1;
+        outPin2 = pin2;
+        outPin3 = pin3;
+        outPin4 = pin4;
+      }
+      
+      //% blockId=four_sensor_trackingValue block="four_sensor_tracking get sensor value"  group="循迹传感器"
+      //% inlineInputMode=inline
+      //% weight=72
+      //% subcategory="传感器"
+      export function four_sensor_trackingValue(): number {
+        let result = 0;
+        pins.digitalWritePin(outPin1, 0)
+        pins.digitalWritePin(outPin2, 0)
+        pins.digitalWritePin(outPin3, 0)
+        pins.digitalWritePin(outPin4, 0)
+        if (pins.digitalReadPin(outPin1) == 1) {
+          result = 1 | result;
+        }else {
+          result = 0 | result;
+        }
+        if (pins.digitalReadPin(outPin2) == 1) {
+          result = 2 | result;
+        }else {
+          result = 0 | result;
+        }
+        if (pins.digitalReadPin(outPin3) == 1) {
+          result = 4 | result;
+        }else {
+          result = 0 | result;
+        }
+         if (pins.digitalReadPin(outPin4) == 1) {
+          result = 8 | result;
+        }else {
+          result = 0 | result;
+        }
+        return result;
+      }
 
 
 }
