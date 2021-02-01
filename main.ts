@@ -1568,7 +1568,7 @@ namespace sensors {
                     while (pins.digitalReadPin(dht11pin) == 1) {
                         counter += 1;
                     }
-                    if (counter > 3) {
+                    if (counter > 10) {
                         value = value + (1 << (7 - i));
                     }
                 }
