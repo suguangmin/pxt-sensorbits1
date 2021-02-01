@@ -1546,7 +1546,7 @@ namespace sensors {
                         dhtcounter1 += 1;
                     }
                     if (i > 15) {
-                        if (dhtcounter1 > 4) {
+                        if (dhtcounter1 > 10) {
                             dhtvalue1 = dhtvalue1 + (1 << (31 - i));
                         }
                     }
