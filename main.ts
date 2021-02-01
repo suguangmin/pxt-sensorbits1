@@ -1546,12 +1546,12 @@ namespace sensors {
                         dhtcounter1 += 1;
                     }
                     if (i > 15) {
-                        if (dhtcounter1 > 2) {
+                        if (dhtcounter1 > 4) {
                             dhtvalue1 = dhtvalue1 + (1 << (31 - i));
                         }
                     }
                 }
-                return ((dhtvalue1 & 0xffff0000) >> 16);
+                return ((dhtvalue1 & 0x0000ffff));
                 break;
 
             case 1:
