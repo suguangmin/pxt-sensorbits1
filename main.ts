@@ -1647,7 +1647,7 @@ namespace sensors {
       }
 
 
-      //% blockId="readdht11_v2" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
+      //% blockId="dht11value_v2" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
     //% subcategory="micro:bit(V2)"
     //% inlineInputMode=inline
     export function dht11value_v2(dht11pin: DigitalPin, dht11type: DHT11Type): number {
