@@ -1551,7 +1551,7 @@ namespace sensors {
                         }
                     }
                 }
-                return ((dhtvalue1 & 0x0000ffff));
+                return ((dhtvalue1 & 0x0000ffff)>> 8);
                 break;
 
             case 1:
