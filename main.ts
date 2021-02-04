@@ -356,7 +356,7 @@ namespace sensors {
         _Rpins = _RPin
     }
 
-    //% blockId=yledon block="set color pin  r_color %r_color|g_color %g_color|b_color %b_color"   group="三色灯"
+    //% blockId=yledon block="set color pin|r_color %r_color|g_color %g_color|b_color %b_color"   group="三色灯"
     //% r_color.min=0  r_color.max=255
     //% g_color.min=0  g_color.max=255
     //% b_color.min=0  b_color.max=255
