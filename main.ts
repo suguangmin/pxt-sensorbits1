@@ -216,6 +216,17 @@ enum Select {
     _clear = 2,
 }
 
+enum Mode {
+    //% block="LOOP"
+    LOOP_MODE = 0,        // 循环模式
+    //% block="BUTTON"
+    BUTTON_MODE = 1,      // 按键模式
+    //% block="KEYWORDS"
+    KEYWORDS_MODE = 2,    // 关键字模式
+    //% block="KEYWORDS_AND"
+    KEYWORDS_AND_BUTTON = 3, //关键字加按键模式
+}
+
 //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
 namespace sensors {
     //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="有源蜂鸣器"
@@ -810,31 +821,6 @@ namespace sensors {
         pins.i2cWriteNumber(DISPLAY_I2C_ADDRESS + (bit % 4), d, NumberFormat.Int8BE)
     }
 
-    // //% blockId="TM650_ON" block="turn on display" group="TM1650数码管"
-    // //% weight=50 blockGap=8
-    // //% subcategory="显示器"
-    // export function on() {
-    //     cmd(_intensity * 16 + 1)
-    // }
-
-    // //% blockId="TM650_OFF" block="turn off display" group="TM1650数码管"
-    // //% weight=50 blockGap=8
-    // //% subcategory="显示器"
-    // export function off() {
-    //     _intensity = 0
-    //     cmd(0)
-    // }
-
-    // //% blockId="TM650_CLEAR" block="clear display" group="TM1650数码管"
-    // //% weight=40 blockGap=8
-    // //% subcategory="显示器"
-    // export function clear() {
-    //     dat(0, 0)
-    //     dat(1, 0)
-    //     dat(2, 0)
-    //     dat(3, 0)
-    //     dbuf = [0, 0, 0, 0]
-    // }
     //% blockId="TM650_Control" block="display control" group="TM1650数码管"
     //% weight=40 blockGap=8
     //% subcategory="显示器"
@@ -846,6 +832,7 @@ namespace sensors {
             _intensity = 0
             cmd(0)
         }
+
         if (option == 2) {
             dat(0, 0)
             dat(1, 0)
@@ -1643,7 +1630,7 @@ namespace sensors {
       }
 
 
-      //% blockId="dht11value_v2" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
+    //% blockId="dht11value_v2" block="value of dht11 %dht11type at pin %dht11pin"  group="温湿度传感器"
     //% subcategory="micro:bit(V2)"
     //% inlineInputMode=inline
     export function dht11value_v2(dht11pin: DigitalPin, dht11type: DHT11Type): number {
@@ -1695,6 +1682,91 @@ namespace sensors {
             default:
                 return 0;
         }
+    }
+
+
+    let VOICE_RESET_REG = 0x5;
+    let VOICE_IIC_ADDR = 0x79;
+    let VOICE_ADD_WORDS_REG = 0x04;
+    let VOICE_ASR_START_REG = 0x6;
+    let VOICE_RESULT_REG = 0;
+    let VOICE_CONFIG_TIME_REG = 0x3;
+
+    function i2cwrite(addr: number, reg: number, value: number) {
+        let buf = pins.createBuffer(2)
+        buf[0] = reg
+        buf[1] = value
+        pins.i2cWriteBuffer(addr, buf)
+    }
+
+    function i2cwrite1(addr: number, reg: number, value: number ,value1: String) {
+        let buf = pins.createBuffer(2)
+        let lengths = value1.length
+        let arr = value1.split('')
+        buf[0] = reg
+        buf[1] = value
+        buf = buf.concat(arr)
+        pins.i2cWriteBuffer(addr, lengths, buf)
+    }
+    
+    function i2ccmd(addr: number, value: number) {
+        let buf = pins.createBuffer(1)
+        buf[0] = value
+        pins.i2cWriteBuffer(addr, buf)
+    }
+    
+    function i2cread(addr: number, reg: number) {
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+        return val;
+    }
+
+    //% blockId="Speech_recognition_reset" block="Voice recognition module for reset"  group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_reset(): void {
+        i2ccmd(VOICE_IIC_ADDR,VOICE_RESET_REG)
+        basic.pause(300)
+    }
+
+    //% blockId="Speech_recognition_mode" block="The voice recognition mode is set to %Mode"  group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_mode(Mode : Mode): void {
+        i2cwrite(VOICE_IIC_ADDR,VOICE_RESET_REG,Mode)
+        basic.pause(300)
+    }
+
+    //% blockId="Speech_recognition_glossary" block="Voice recognition to set the word number %word_number|Word content %word_content"  group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_glossary(word_number : number, word_content : String): void {
+        i2cwrite1(VOICE_IIC_ADDR,VOICE_ADD_WORDS_REG,word_number,word_content)
+        basic.pause(300)
+    }
+
+    //% blockId="Speech_recognition_start" block="Voice recognition starts to recognize"  group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_start(): void {
+        i2ccmd(VOICE_IIC_ADDR,VOICE_ASR_START_REG)
+        basic.pause(300)
+    }
+
+    //% blockId="Speech_recognition_get_result" block="Speech recognition to get the corresponding number of the recognized words"   group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_get_result(): number {
+       let result =i2cread(VOICE_IIC_ADDR,VOICE_RESULT_REG)
+       return result;
+    }
+
+    //% blockId="Speech_recognition_time" block="Voice recognition to set wake-up time %time"  group="语音识别模块"
+    //% subcategory="智能模块"
+    //% inlineInputMode=inline
+    export function Speech_recognition_time(time : number): void {
+        i2cwrite(VOICE_IIC_ADDR,VOICE_CONFIG_TIME_REG,time)
+        basic.pause(300)
     }
 
 
