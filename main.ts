@@ -1700,8 +1700,8 @@ namespace sensors {
     }
 
     function i2cwrite1(addr: number, reg: number, value: number ,value1: String) {
-        let buf = pins.createBuffer(2)
         let lengths = value1.length
+        let buf = pins.createBuffer(2+lengths)
         let arr = value1.split('')
         buf[0] = reg
         buf[1] = value
