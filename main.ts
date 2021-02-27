@@ -1742,7 +1742,7 @@ namespace sensors {
     //% blockId="Speech_recognition_glossary" block="Voice recognition to set the word number %word_number|Word content %word_content"  group="语音识别模块"
     //% subcategory="智能模块"
     //% inlineInputMode=inline
-    export function Speech_recognition_glossary(word_number : number, word_content : String): void {
+    export function Speech_recognition_glossary(word_number : number, word_content : string): void {
         i2cwrite1(VOICE_IIC_ADDR,VOICE_ADD_WORDS_REG,word_number,word_content)
         basic.pause(300)
     }
