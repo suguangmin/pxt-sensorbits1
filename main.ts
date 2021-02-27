@@ -1705,9 +1705,12 @@ namespace sensors {
         let arr = value1.split('')
         buf[0] = reg
         buf[1] = value
-        let buf1 = buf.concat(arr)
-        buf1[2+lengths] = lengths
-        pins.i2cWriteBuffer(addr, buf1)
+        for (let i = 0; i < arr.length; i++) {
+            buf[1+i] = arr[i]
+        }
+        //let buf1 = buf.concat(arr)
+        //buf1[2+lengths] = lengths
+        pins.i2cWriteBuffer(addr, buf)
     }
     
     function i2ccmd(addr: number, value: number) {
