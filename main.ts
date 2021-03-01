@@ -1705,9 +1705,9 @@ namespace sensors {
         let arr = value1.split('')
         buf[0] = reg 
         buf[1] = value
-        // for (let i = 0; i < arr.length; i++) {
-        //     buf[1+i] = arr[i]
-        // }
+        for (let i = 0; i < arr.length; i++) {
+            buf[1+i] = arr[i]
+        }
         pins.i2cWriteBuffer(addr, buf)
     }
     
