@@ -1699,11 +1699,11 @@ namespace sensors {
         pins.i2cWriteBuffer(addr, buf)
     }
 
-    function i2cwrite1(addr: number, reg: number, value: number ,value1: String) {
+    function i2cwrite1(addr: number, reg: number, value: number ,value1: string) {
         let lengths = value1.length
         let buf = pins.createBuffer(2+lengths)
         let arr = value1.split('')
-        buf[0] = reg
+        buf[0] = reg 
         buf[1] = value
         // for (let i = 0; i < arr.length; i++) {
         //     buf[1+i] = arr[i]
@@ -1743,7 +1743,7 @@ namespace sensors {
     //% subcategory="智能模块"
     //% inlineInputMode=inline
     export function Speech_recognition_glossary(word_number : number, word_content : string): void {
-        i2cwrite1(VOICE_IIC_ADDR,VOICE_ADD_WORDS_REG,word_number,word_content)
+        i2cwrite1(VOICE_IIC_ADDR, VOICE_ADD_WORDS_REG, word_number,word_content)
         basic.pause(300)
     }
 
