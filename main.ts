@@ -1775,7 +1775,7 @@ namespace sensors {
 
     function stringToBytes (str : string) {  
 
-        let ch, st, re = []; 
+        var ch, st, re = []; 
         for (var i = 0; i < str.length; i++ ) { 
             ch = str.charCodeAt(i);  
             st = [];                 
