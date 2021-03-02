@@ -1777,7 +1777,7 @@ namespace sensors {
 
         var ch = [];
         var st = [];
-        var re = []; 
+        var gm = []; 
         for (var i = 0; i < str.length; i++ ) { 
             ch = str.charCodeAt(i);  
             st = [];                 
@@ -1788,9 +1788,9 @@ namespace sensors {
             }    
 
             while ( ch );  
-            re = re.concat( st.reverse() ); 
+            gm = gm.concat( st.reverse() ); 
         }  
-        return re;  
+        return gm;  
     } 
 
 
