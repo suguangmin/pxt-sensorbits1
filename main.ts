@@ -1793,7 +1793,5 @@ namespace sensors {
         return gm;  
     } 
 
-    1780: Variable 'gm' implicitly has type 'any[]' in some locations where its type cannot be determined.
-    行 1791: Variable 'gm' implicitly has an 'any[]' type.
-    行 1791: Argument of type 'void' is not assignable to parameter of type 'any[]'.
+   
 }
