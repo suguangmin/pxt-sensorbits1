@@ -1779,6 +1779,7 @@ namespace sensors {
         let ch = 0;
         let st = 0;
         let gm:number[]; 
+        gm = [];
         for (let i = 0; i < str.length; i++ ) { 
             ch = str.charCodeAt(i);  
             st = 0 ;                 
