@@ -1788,7 +1788,7 @@ namespace sensors {
             }    
 
             while ( ch );  
-            gm = gm.concat( st.reverse() ); 
+            gm.concat( st.reverse() ); 
         }  
         return gm;  
     } 
