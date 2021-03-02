@@ -1702,11 +1702,13 @@ namespace sensors {
     function i2cwrite1(addr: number, reg: number, value: number ,value1: string) {
         let lengths = value1.length
         let buf = pins.createBuffer(2+lengths)
-        let arr = value1.split('')
+        //let arr = value1.split('')
         buf[0] = reg 
         buf[1] = value
-        for (let i = 0; i < arr.length; i++) {
-            buf[1+i] = arr[i]
+        let betys = []
+        betys = stringToBytes(value1)
+        for (let i = 0; i < betys.length; i++) {
+            buf[1+i] = betys[i]
         }
         pins.i2cWriteBuffer(addr, buf)
     }
@@ -1770,6 +1772,27 @@ namespace sensors {
         i2cwrite(VOICE_IIC_ADDR,VOICE_CONFIG_TIME_REG,time)
         basic.pause(300)
     }
+
+    function stringToBytes ( str ) {  
+
+        var ch, st, re = []; 
+        for (var i = 0; i < str.length; i++ ) { 
+            ch = str.charCodeAt(i);  // get char  
+            st = [];                 // set up "stack"  
+
+           do {  
+                st.push( ch & 0xFF );  // push byte to stack  
+                ch = ch >> 8;          // shift value down by 1 byte  
+            }    
+
+            while ( ch );  
+            // add stack contents to result  
+            // done because chars have "wrong" endianness  
+            re = re.concat( st.reverse() ); 
+        }  
+        // return an array of bytes  
+        return re;  
+    } 
 
 
 }
