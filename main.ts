@@ -1776,21 +1776,22 @@ namespace sensors {
     function stringToBytes (str : string) {  
 
         let ch = 0;
-        var st = [];
+        let st = 0;
         let gm:number[]; 
         for (var i = 0; i < str.length; i++ ) { 
             ch = str.charCodeAt(i);  
-            st = [];                 
+            st = 0 ;                 
 
            do {  
-                st.push( ch & 0xFF );  
-                ch = ch >> 8;          
+                st = ( ch & 0xFF );  
+                ch = ch >> 8;   
+                gm.push(st);        
             }    
 
             while ( ch );  
-            var test = gm.concat( st.reverse() ); 
+            
         }  
-        return test;  
+        return gm;  
     } 
 
    
