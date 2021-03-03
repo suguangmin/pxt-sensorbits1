@@ -1708,7 +1708,7 @@ namespace sensors {
         let betys = []
         betys = stringToBytes(value1)
         for (let i = 0; i < betys.length; i++) {
-            buf[1+i] = betys[i]
+            buf[2+i] = betys[i]
         }
         pins.i2cWriteBuffer(addr, buf)
     }
