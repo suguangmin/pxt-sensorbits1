@@ -1689,7 +1689,7 @@ namespace sensors {
     let VOICE_IIC_ADDR = 0x79;
     let VOICE_ADD_WORDS_REG = 0x04;
     let VOICE_ASR_START_REG = 0x6;
-    let VOICE_RESULT_REG = 4;
+    let VOICE_RESULT_REG = 0;
     let VOICE_CONFIG_TIME_REG = 0x3;
 
     function i2cwrite(addr: number, reg: number, value: number) {
