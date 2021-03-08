@@ -240,7 +240,7 @@ enum barb_fitting {
     JOYSTICK_BUTTON = 4,
 }
 
-enum key_status{
+enum key_status {
     PRESS_DOWN = 0,   //按下
     PRESS_UP = 1,    //释放
     SINGLE_CLICK = 3,     //单击
@@ -989,37 +989,37 @@ namespace sensors {
         return row
     }
 
-    let _Apin = 0
-    let _Dpin = 0
-    let _Bpin = 0
-    let position = 0
+    // let _Apin = 0
+    // let _Dpin = 0
+    // let _Bpin = 0
+    // let position = 0
 
-    function read_quadrature() {
-        if (pins.digitalReadPin(_Apin)==0){
-            if(pins.digitalReadPin(_Bpin)==0)
-            position++;
-        }
-        else{
-            if(pins.digitalReadPin(_Bpin)==0)
-            position--;
-        }
-        var oldposition = position;
-    }
+    // function read_quadrature() {
+    //     if (pins.digitalReadPin(_Apin)==0){
+    //         if(pins.digitalReadPin(_Bpin)==0)
+    //         position++;
+    //     }
+    //     else{
+    //         if(pins.digitalReadPin(_Bpin)==0)
+    //         position--;
+    //     }
+    //     var oldposition = position;
+    // }
 
-    //% blockId=rotaryEncoder block="rotaryEncoder setup | pinA %pina|pinB %pinb|pinD %pind"   group="旋转编码器"
-    //% weight=70
-    //% subcategory="基础输入模块"
-    export function rotaryEncoder(pina: DigitalPin, pinb: DigitalPin, pind: DigitalPin): void {
-        _Apin = pina
-        _Bpin = pinb
-        _Dpin = pind
-    }
+    // //% blockId=rotaryEncoder block="rotaryEncoder setup | pinA %pina|pinB %pinb|pinD %pind"   group="旋转编码器"
+    // //% weight=70
+    // //% subcategory="基础输入模块"
+    // export function rotaryEncoder(pina: DigitalPin, pinb: DigitalPin, pind: DigitalPin): void {
+    //     _Apin = pina
+    //     _Bpin = pinb
+    //     _Dpin = pind
+    // }
 
-    //% blockId=pinsRead block="select pin  %selectpin"  group="旋转编码器"
-    //% weight=69
-    //% subcategory="基础输入模块"
-    export function pinsRead(): number {
-    }
+    // //% blockId=pinsRead block="select pin  %selectpin"  group="旋转编码器"
+    // //% weight=69
+    // //% subcategory="基础输入模块"
+    // export function pinsRead(): number {
+    // }
 
 
     let Xpin = 0
