@@ -1899,12 +1899,11 @@ namespace sensors {
         let value = 0;
         if(shaft == 0){
             value = i2cread(JOYSTICK_I2C_ADDR,JOYSTICK_LEFT_X_REG);
-            return value;
         }
         if(shaft == 1){
             value = i2cread(JOYSTICK_I2C_ADDR,JOYSTICK_LEFT_Y_REG);
-            return value;
         }
+        return value;
     }
 
     /**
