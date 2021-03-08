@@ -227,6 +227,33 @@ enum Mode {
     KEYWORDS_AND_BUTTON = 3, //关键字加按键模式
 }
 
+enum barb_fitting {
+    //% block="LEFT"
+    BUTOON_LEFT = 0,
+    //% block="RIGHT" 
+    BUTOON_RIGHT = 1,
+    //% block="UP"
+    BUTOON_UP = 2, 
+    //% block="DOWN"
+    BUTOON_DOWN = 3, 
+    //% block="BUTTON"
+    JOYSTICK_BUTTON = 4,
+}
+
+enum key_status{
+    PRESS_DOWN = 0,   //按下
+    PRESS_UP = 1,    //释放
+    SINGLE_CLICK = 3,     //单击
+    DOUBLE_CLICK = 4,    //双击
+    LONG_PRESS_HOLD = 6,    //长按
+    NONE_PRESS = 8,      //未按
+}
+
+enum Shaft{
+    X_Shaft = 0,
+    Y_Shaft = 1,
+}
+
 //% color="#FFA500" weight=10 icon="\uf2c9" block="Sensor:bit"
 namespace sensors {
     //% blockId=actuator_buzzer0 block="actuator_buzzer0 pin ：%pin|status %status"   group="有源蜂鸣器"
@@ -965,6 +992,19 @@ namespace sensors {
     let _Apin = 0
     let _Dpin = 0
     let _Bpin = 0
+    let position = 0
+
+    function read_quadrature() {
+        if (pins.digitalReadPin(_Apin)==0){
+            if(pins.digitalReadPin(_Bpin)==0)
+            position++;
+        }
+        else{
+            if(pins.digitalReadPin(_Bpin)==0)
+            position--;
+        }
+        var oldposition = position;
+    }
 
     //% blockId=rotaryEncoder block="rotaryEncoder setup | pinA %pina|pinB %pinb|pinD %pind"   group="旋转编码器"
     //% weight=70
@@ -978,21 +1018,7 @@ namespace sensors {
     //% blockId=pinsRead block="select pin  %selectpin"  group="旋转编码器"
     //% weight=69
     //% subcategory="基础输入模块"
-    export function pinsRead(selectpin: _selectpin): number {
-        let a
-        if (selectpin == 0)
-            a = _Apin
-        else if (selectpin == 1)
-            a = _Bpin
-        else if (selectpin == 2)
-            a = _Dpin
-        pins.digitalWritePin(a, 0)
-        if (pins.digitalReadPin(a) == 1) {
-            return 1;
-        } else {
-            return 0;
-        }
-        //return pins.digitalReadPin(a)
+    export function pinsRead(): number {
     }
 
 
@@ -1795,6 +1821,100 @@ namespace sensors {
         }  
         return gm;  
     } 
+
+    let JOYSTICK_I2C_ADDR = 0x5A;
+    let JOYSTICK_LEFT_X_REG = 0x10;
+    let JOYSTICK_LEFT_Y_REG = 0x11;
+
+    let BUTOON_LEFT_REG = 0x24;
+    let BUTOON_RIGHT_REG = 0x23;
+    let BUTOON_UP_REG = 0x22;
+    let BUTOON_DOWN_REG = 0x21;
+    let JOYSTICK_BUTTON_REG = 0x20;
+    let NONE_PRESS = 8;
+
+    function Get_Button_Status (button : number){
+        switch(button) {
+            case 0: 
+                return i2cread(JOYSTICK_I2C_ADDR,BUTOON_LEFT_REG);
+            case 1: 
+                return i2cread(JOYSTICK_I2C_ADDR,BUTOON_RIGHT_REG);
+            case 2: 
+                return i2cread(JOYSTICK_I2C_ADDR,BUTOON_UP_REG);
+            case 3: 
+                return i2cread(JOYSTICK_I2C_ADDR,BUTOON_DOWN_REG);
+            case 4: 
+                return i2cread(JOYSTICK_I2C_ADDR,JOYSTICK_BUTTON_REG);
+            default:
+                return 0xff;
+        }
+    }
+
+    /**
+     * 游戏手柄
+     */
+    //% blockId=Gamepad_Press block="Gamepad buttons %button Is pressed？"  group="游戏手柄"
+    //% weight=74
+    //% subcategory="基础输入模块"
+    //% inlineInputMode=inline
+    export function Gamepad_Press(button: barb_fitting): boolean {
+        if(Get_Button_Status(button) != NONE_PRESS && Get_Button_Status(button) != 0xff)
+    {
+        return true;
+    }
+        return false;   
+    }
+
+    /**
+     * 游戏手柄
+     */
+    //% blockId=Gamepad_Release block="Gamepad buttons %button Is Released？"  group="游戏手柄"
+    //% weight=74
+    //% subcategory="基础输入模块"
+    //% inlineInputMode=inline
+    export function Gamepad_Release(button: barb_fitting): boolean {
+        if(Get_Button_Status(button) == NONE_PRESS)
+    {
+        return true;
+    }
+        return false;   
+    }
+
+    /**
+     * 游戏手柄
+     */
+    //% blockId=Gamepad_Shaft block="Game controller acquisition %shaft the value of"  group="游戏手柄"
+    //% weight=74
+    //% subcategory="基础输入模块"
+    //% inlineInputMode=inline
+    export function Gamepad_Shaft(shaft: Shaft): number { 
+        let value = 0;
+        if(shaft == 0){
+            value = i2cread(JOYSTICK_I2C_ADDR,JOYSTICK_LEFT_X_REG);
+            return value;
+        }
+        if(shaft == 1){
+            value = i2cread(JOYSTICK_I2C_ADDR,JOYSTICK_LEFT_Y_REG);
+            return value;
+        }
+    }
+
+    /**
+     * 游戏手柄
+     */
+    //% blockId=Gamepad_Status block="Button %button is it %status status?"  group="游戏手柄"
+    //% weight=74
+    //% subcategory="基础输入模块"
+    //% inlineInputMode=inline
+    export function Gamepad_Status(button : barb_fitting,status : key_status): boolean {
+        if(Get_Button_Status(button) == status)
+    {
+        return true;
+    }else{
+        return false;
+    }
+    }
+      
 
    
 }
