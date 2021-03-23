@@ -1409,8 +1409,7 @@ namespace sensors {
         pins.digitalWritePin(pin, 1);
         control.waitMicros(50);
         pins.digitalWritePin(pin, 0);
-        control.waitMicros(2);
-        pins.digitalReadPin(pin);
+        control.waitMicros(2300);
         // read pulse
         let d = pins.pulseIn(pin, PulseValue.High, 25000);
         let ret = d;
