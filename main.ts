@@ -1409,7 +1409,12 @@ namespace sensors {
         pins.digitalWritePin(pin, 1);
         control.waitMicros(50);
         pins.digitalWritePin(pin, 0);
-        control.waitMicros(2300);
+        //control.waitMicros(2300);
+        let time_val = 0;
+        while(!pins.digitalReadPin(pin) && time_val < 20000)
+        {
+            time_val++;
+        }
         // read pulse
         let d = pins.pulseIn(pin, PulseValue.High, 25000);
         let ret = d;
