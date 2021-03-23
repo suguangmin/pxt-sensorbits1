@@ -1415,6 +1415,7 @@ namespace sensors {
         {
             time_val++;
         }
+        pins.digitalWritePin(pin, 1);
         // read pulse
         let d = pins.pulseIn(pin, PulseValue.High, 25000);
         let ret = d;
