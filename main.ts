@@ -1403,13 +1403,14 @@ namespace sensors {
     //% inlineInputMode=inline
     //% subcategory="传感器"
     export function Ultrasonic(pin: DigitalPin): number {
-        pins.setPull(pin, PinPullMode.PullNone);
+        pins.setPull(pin, PinPullMode.PullUp);
         pins.digitalWritePin(pin, 0);
         control.waitMicros(2);
         pins.digitalWritePin(pin, 1);
         control.waitMicros(50);
         pins.digitalWritePin(pin, 0);
         control.waitMicros(2);
+        pins.digitalReadPin(pin);
         // read pulse
         let d = pins.pulseIn(pin, PulseValue.High, 25000);
         let ret = d;
