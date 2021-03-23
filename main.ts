@@ -1419,8 +1419,7 @@ namespace sensors {
             ret = distanceBuf;
         }
         distanceBuf = d;
-        return d;
-        //return Math.floor(ret * 9 / 6 / 58);
+        return Math.floor(ret * 9 / 6 / 58);
         //return Math.floor(ret / 40 + (ret / 800));
         // Correction
     }
