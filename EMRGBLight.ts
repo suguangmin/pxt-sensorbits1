@@ -14,7 +14,7 @@ enum EMRGBPixelMode {
  * RGBLight Functions
  */
 namespace EMRGBLight {
-    //% shim=sendBufferAsm
+    //% shim=EM_sendbuffer
     //% parts="RGBLight"
     function sendBuffer(buf: Buffer, pin: DigitalPin) {
 
