@@ -1415,7 +1415,6 @@ namespace sensors {
         {
             time_val++;
         }
-        pins.digitalWritePin(pin, 1);
         // read pulse
         let d = pins.pulseIn(pin, PulseValue.High, 25000);
         let ret = d;
@@ -1424,7 +1423,8 @@ namespace sensors {
             ret = distanceBuf;
         }
         distanceBuf = d;
-        return Math.floor(ret * 9 / 6 / 58);
+        return d;
+        //return Math.floor(ret * 9 / 6 / 58);
         //return Math.floor(ret / 40 + (ret / 800));
         // Correction
     }
