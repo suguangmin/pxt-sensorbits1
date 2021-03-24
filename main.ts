@@ -1441,15 +1441,17 @@ namespace sensors {
             emRGBLight = EMRGBLight.create(pin, offset+6, EMRGBPixelMode.RGB)
         }
          
-        if (index == RgbUltrasonics.Left) {
-            start = 0;
-            end = 2;
-        } else if (index == RgbUltrasonics.Right) {
-            start = 3;
-            end = 5;
-        } else if (index == RgbUltrasonics.All) {
-            start = 0;
-            end = 5;
+        if(offset>=4){
+            if (index == RgbUltrasonics.Left) {
+                start = 0;
+                end = 2;
+            } else if (index == RgbUltrasonics.Right) {
+                start = 3;
+                end = 5;
+            } else if (index == RgbUltrasonics.All) {
+                start = 0;
+                end = 5;
+            }
         }
         start += offset;
         end += offset;
