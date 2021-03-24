@@ -1436,7 +1436,7 @@ namespace sensors {
         emRGBLight.show();
     }
     export function rus04_rgb(pin: DigitalPin, offset: number, index: number, rgb: number, effect: number): void {
-        let start, end;
+        let start = 0, end = 0;
         if (!emRGBLight) {
             emRGBLight = EMRGBLight.create(pin, offset+6, EMRGBPixelMode.RGB)
         }
