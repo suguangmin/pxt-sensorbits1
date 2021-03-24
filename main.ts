@@ -1435,16 +1435,12 @@ namespace sensors {
         }
         emRGBLight.show();
     }
-
-    //% blockId="motorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
-    //% weight=75
-    //% inlineInputMode=inline
-    //% subcategory="传感器"
-    export function sensorbit_rus04(pin: DigitalPin, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
+    export function rus04_rgb(pin: DigitalPin, offset: number, index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
         let start, end;
         if (!emRGBLight) {
-            emRGBLight = EMRGBLight.create(pin, 6, EMRGBPixelMode.RGB)
+            emRGBLight = EMRGBLight.create(pin, offset+6, EMRGBPixelMode.RGB)
         }
+         
         if (index == RgbUltrasonics.Left) {
             start = 0;
             end = 2;
@@ -1455,6 +1451,8 @@ namespace sensors {
             start = 0;
             end = 5;
         }
+        start += offset;
+        end += offset;
         switch (effect) {
             case ColorEffect.None:
                 RgbDisplay(start, end, rgb);
@@ -1505,7 +1503,7 @@ namespace sensors {
                     emRGBLight.show();
                     basic.pause(150);
                 }
-                RgbDisplay(4, 9, 0);
+                RgbDisplay(start, end, 0);
                 break;
             case ColorEffect.Flash:
                 for (let i = 0; i < 6; i++) {
@@ -1518,6 +1516,14 @@ namespace sensors {
         }
     }
 
+    //% blockId="motorbit_rus04" block="part %index show color %rgb effect %effect rgbpin %pin"  group="RGB超声波"
+    //% weight=75
+    //% inlineInputMode=inline
+    //% subcategory="传感器"
+    export function sensorbit_rus04(pin: DigitalPin,  index: RgbUltrasonics, rgb: RgbColors, effect: ColorEffect): void {
+        rus04_rgb(pin, 0, index, rgb, effect);
+    }
+  
     /**
      * Send a ping and get the echo time (in microseconds) as a result
      * @param trig tigger pin
